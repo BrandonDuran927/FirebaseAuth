@@ -36,9 +36,7 @@ import kotlin.math.sign
 @Composable
 fun NavigationGraph(
     viewModel: AuthScreenViewModel = hiltViewModel(),
-    viewModel1: HomeScreenViewModel = hiltViewModel(),
     navController: NavHostController = rememberNavController(),
-    //launcher: ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult>
 ) {
     val scope = rememberCoroutineScope()
 
@@ -47,24 +45,27 @@ fun NavigationGraph(
         startDestination = AUTH_SCREEN
     ) {
         composable(route = AUTH_SCREEN) {
+            val signInResult by viewModel.signInResult.collectAsStateWithLifecycle()
             val launcher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.StartIntentSenderForResult(),
                 onResult = { result ->
                     if (result.resultCode == RESULT_OK) {
                         scope.launch {
-                            val signInResult = viewModel.handleSignInResult(
+                            val onSignInResult = viewModel.handleSignInResult(
                                 intent = result.data ?: return@launch
                             )
-                            viewModel.onSignInResult(signInResult)
+                            viewModel.onSignInResult(onSignInResult)
                         }
                     }
                 }
             )
 
-            val signInResult by viewModel.signInResult.collectAsStateWithLifecycle()
-
             if (signInResult.isSuccess) {
-                navController.navigate(HOME_SCREEN)
+                navController.navigate(HOME_SCREEN) {
+                    popUpTo(0) {
+                        inclusive = true
+                    }
+                }
                 viewModel.resetState()
             }
 
@@ -75,12 +76,8 @@ fun NavigationGraph(
                 onCreateAccount = {
                     navController.navigate(SIGNUP_SCREEN)
                 },
-                onTmp = {
-                    navController.navigate(HOME_SCREEN)
-                },
                 launcher = launcher,
                 onSignInGoogle = {
-                    // TODO: Maybe this is what it cause the problem..
                     scope.launch {
                         val signInIntentSender = viewModel.startSignIn()
                         launcher.launch(
@@ -89,7 +86,6 @@ fun NavigationGraph(
                             ).build()
                         )
                     }
-//                    navController.navigate(HOME_SCREEN)
                 }
             )
         }
@@ -115,13 +111,6 @@ fun NavigationGraph(
         }
 
         composable(route = HOME_SCREEN) {
-            val homeScreenState by viewModel1.homeScreenState.collectAsStateWithLifecycle()
-
-//            if (homeScreenState.email == null) {
-//                Log.d("Navigation", "1. Navigating to auth screen")
-//                navController.navigate(AUTH_SCREEN)
-//            }
-
             HomeScreen(
                 navController = navController
             )

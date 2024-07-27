@@ -1,12 +1,15 @@
 package com.example.firebaseauthentication.presentation.home_screen
 
 import android.util.Log
+import android.widget.Space
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -83,19 +86,6 @@ fun HomeScreen(
                                 contentDescription = null
                             )
                         }
-
-                        IconButton(
-                            modifier = Modifier.size(25.dp),
-                            onClick = {
-                                navController.navigate(AUTH_SCREEN)
-                                Log.d("Navigation", "Navigating to AUTH_SCREEN")
-                            }
-                        ) {
-                            Icon(
-                                Icons.Rounded.Face,
-                                contentDescription = null
-                            )
-                        }
                     }
                 },
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -115,21 +105,32 @@ fun HomeScreen(
                     style = MaterialTheme.typography.bodyLarge,
                     fontSize = 32.sp
                 )
+
+                Spacer(Modifier.height(16.dp))
+
                 Text(
                     text = "Email: ${homeScreenState.email}",
                     style = MaterialTheme.typography.bodyLarge,
                     fontSize = 16.sp
                 )
+
+                Spacer(Modifier.height(16.dp))
+
                 Text(
                     text = "ID: ${homeScreenState.uid}",
                     style = MaterialTheme.typography.bodyLarge,
                     fontSize = 16.sp
                 )
+
+                Spacer(Modifier.height(16.dp))
+
                 Text(
                     text = "Email Verified: ${homeScreenState.isEmailVerified}",
                     style = MaterialTheme.typography.bodyLarge,
                     fontSize = 16.sp
                 )
+
+                Spacer(Modifier.height(16.dp))
             } else {
                 AlertDialogErrorMessage(
                     errorMessage = homeScreenState.errorMessage,

@@ -44,13 +44,11 @@ fun AlertDialogLogout(
     val settingsState by viewModel.settingsState.collectAsStateWithLifecycle()
 
     LaunchedEffect(settingsState.isLogoutSuccess) {
-        Log.d("UI State", "isLogoutSuccess: ${settingsState.isLogoutSuccess}")
         if (settingsState.isLogoutSuccess) {
-            Log.d("Navigation", "Navigating to AUTH_SCREEN")
             navController.navigate(AUTH_SCREEN) {
                 popUpTo(0) { inclusive = true } // Clear back stack
             }
-            viewModel.resetState() // Reset state after navigation
+            viewModel.resetState()
         }
     }
 

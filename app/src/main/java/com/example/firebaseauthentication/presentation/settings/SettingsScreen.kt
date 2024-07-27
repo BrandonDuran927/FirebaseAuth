@@ -39,6 +39,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.firebaseauthentication.navigation.AUTH_SCREEN
 import com.example.firebaseauthentication.navigation.HOME_SCREEN
+import com.example.firebaseauthentication.presentation.settings.composable.AlertDialogDelete
 import com.example.firebaseauthentication.presentation.settings.composable.AlertDialogLogout
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,8 +48,6 @@ fun SettingsScreen(
     viewModel: SettingsScreenViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
-
-
   Scaffold(
       topBar = {
           TopAppBar(
@@ -61,7 +60,11 @@ fun SettingsScreen(
               ),
               navigationIcon = {
                   IconButton(onClick = {
-                      navController.navigate(HOME_SCREEN)
+                      navController.navigate(HOME_SCREEN) {
+                          popUpTo(0) {
+                              inclusive = true
+                          }
+                      }
                   }) {
                       Icon(
                           imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -141,6 +144,10 @@ fun SettingsScreen(
           }
 
           AlertDialogLogout(
+              navController = navController
+          )
+
+          AlertDialogDelete(
               navController = navController
           )
       }

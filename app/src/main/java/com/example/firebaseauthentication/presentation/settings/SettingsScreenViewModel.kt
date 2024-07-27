@@ -47,6 +47,12 @@ class SettingsScreenViewModel @Inject constructor(
         }
     }
 
+    fun resetDelete() {
+        _settingsState.update {
+            it.copy(isDelete = false)
+        }
+    }
+
     fun signOutUser() {
         viewModelScope.launch {
             try {
@@ -72,6 +78,11 @@ class SettingsScreenViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 repository.deleteUser()
+                _settingsState.update {
+                    it.copy(
+                        isDeleteSuccess = true
+                    )
+                }
                 Log.d("Delete Account", "Successful")
             } catch (e: Exception) {
                 e.printStackTrace()

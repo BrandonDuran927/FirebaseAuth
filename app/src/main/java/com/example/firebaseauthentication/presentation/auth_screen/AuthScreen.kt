@@ -60,15 +60,12 @@ fun AuthScreen(
     onLogin: () -> Unit,
     onCreateAccount: () -> Unit,
     onSignInGoogle: () -> Unit,
-    onTmp: () -> Unit,
     viewModel: AuthScreenViewModel = hiltViewModel(),
     launcher: ManagedActivityResultLauncher<IntentSenderRequest, ActivityResult>
 ) {
     val signInResult by viewModel.signInResult.collectAsStateWithLifecycle()
 
-
     LaunchedEffect(signInResult.result) {
-        Log.d("GoogleSignIn", "LaunchedEffect - result: ${signInResult.result}")
         signInResult.result?.let {
             launcher.launch(
                 IntentSenderRequest.Builder(it.pendingIntent.intentSender).build()
@@ -169,22 +166,6 @@ fun AuthScreen(
                         modifier = Modifier.size(15.dp),
                         imageVector = ImageVector.vectorResource(R.drawable.google_icon),
                         contentDescription = null
-                    )
-                }
-            }
-
-            Button(
-                colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                onClick = onTmp
-            ) {
-                Row(
-                    modifier = Modifier.width(150.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "tmp",
-                        color = Color.Black
                     )
                 }
             }

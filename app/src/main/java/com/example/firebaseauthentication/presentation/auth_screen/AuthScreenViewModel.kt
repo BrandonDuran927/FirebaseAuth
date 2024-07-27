@@ -82,7 +82,6 @@ class AuthScreenViewModel @Inject constructor(
                 errorMessageSignIn = result.errorMessage
             )
         }
-        Log.d("GoogleSignIn", "OnSignInResult: ${_signInResult.value.isSuccess}")
     }
 
     fun resetState() {

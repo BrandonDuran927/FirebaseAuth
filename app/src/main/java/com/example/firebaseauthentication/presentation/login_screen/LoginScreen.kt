@@ -62,9 +62,7 @@ fun LoginScreen(
     createAccount: () -> Unit,
     forgotPassword: () -> Unit
 ) {
-
     val loginScreenState by viewModel.loginState.collectAsStateWithLifecycle()
-
 
     Scaffold(
         topBar = {
@@ -175,7 +173,11 @@ fun LoginScreen(
             )
 
             if (loginScreenState.isSuccess) {
-                navController.navigate(HOME_SCREEN)
+                navController.navigate(HOME_SCREEN) {
+                    popUpTo(0) {
+                        inclusive = true
+                    }
+                }
                 viewModel.resetLoginState()
             }
 
